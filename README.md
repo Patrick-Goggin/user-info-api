@@ -9,7 +9,7 @@ Tell us what components we need to run your solution locally
 
 # Install
 ## Tell us what commands we have to run to install your solution dependencies locally
-1. Open terminal at project root
+1. Open a terminal
 2. Execute these commands:
 ```bash
 $    git clone https://github.com/Patrick-Goggin/user-info-api.git
