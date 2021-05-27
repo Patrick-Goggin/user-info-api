@@ -25,3 +25,8 @@ http://localhost:8080/userinfo
 $    curl --request GET --url http://localhost:8080/userinfo
 ```
 
+###To build and run image with Docker:
+```bash
+$    ./gradlew bootBuildImage
+$    docker run -it -p8080:8080 demo:0.0.1-SNAPSHOT
+```
