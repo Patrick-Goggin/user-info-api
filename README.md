@@ -1,36 +1,41 @@
 # user-info-api
-user-info-api
+REST API for Datasite code test
 
-# Required components for running the application in development mode
-Tell us what components we need to run your solution locally
-- Git
-- Java 11
+## Technologies Used
+- Spring Boot
+- Spock
+- Groovy
 - Docker
+- Gradle
 
-# Install
-## Tell us what commands we have to run to install your solution dependencies locally
-1. Open a terminal
-2. Execute these commands:
+## Requirements
+### If you haven't already, install these before downloading the project
+- [Git](https://git-scm.com/downloads)
+- [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [Docker](https://docs.docker.com/get-docker/)
+
+## Install/Run
+### To download and run the project locally, run these commands
 ```bash
-$    git clone https://github.com/Patrick-Goggin/user-info-api.git
-$    cd user-info-api
-$    ./gradlew :bootRun
+$ git clone https://github.com/Patrick-Goggin/user-info-api.git
+$ cd user-info-api
+$ ./gradlew :bootRun
 ```
 
-### To build and run image with Docker:
-1. Start your local Docker daemon locally with either the Docker desktop app or on the command line
-2. execute these commands:
+### To build and run image with Docker
+1. Start your local Docker daemon
+2. Run these commands at the project root:
 ```bash
-$    ./gradlew bootBuildImage
-$    docker run -it -p8080:8080 user-info-api:0.0.1-SNAPSHOT
+$ ./gradlew bootBuildImage
+$ docker run -it -p8080:8080 user-info-api:0.0.1-SNAPSHOT
 ```
 
-# Tell us what commands/things we have to do to execute the endpoint locally
+## Smoke Test Endpoint
 ### In a browser or using a REST client, make a GET request to this url:
 http://localhost:8080/userinfo
 
-### Or run this Curl in the terminal:
+### Or run this cURL:
 ```bash
-$    curl --request GET --url http://localhost:8080/userinfo
+$ curl --request GET --url http://localhost:8080/userinfo
 ```
 
