@@ -1,8 +1,8 @@
 package com.pgoggin.api.service
 
-import com.pgoggin.api.client.ProjectMembershipClient
-import com.pgoggin.api.client.RegisteredUsersClient
-import com.pgoggin.api.client.UnregisteredUsersClient
+import com.pgoggin.api.client.async.ProjectMembershipClient
+import com.pgoggin.api.client.async.RegisteredUsersClient
+import com.pgoggin.api.client.async.UnregisteredUsersClient
 import com.pgoggin.api.domain.ProjectMembership
 import com.pgoggin.api.domain.UserInfo
 import org.springframework.beans.factory.annotation.Autowired
@@ -63,8 +63,11 @@ class UserInfoService {
     private void findUserAndAddProjectMembership(ProjectMembership projectMembership, Map<String, UserInfo> userInfoMap) {
         UserInfo userInfo = userInfoMap.get(projectMembership.getUserId())
         if (userInfo != null) {
-            userInfo.addProjectId(projectMembership.getProjectId())
-            userInfo.getProjectIds().sort { a, b ->
+            if (!userInfo.projectIds) {
+                userInfo.projectIds = []
+            }
+            userInfo.projectIds << projectMembership.projectId
+            userInfo.projectIds.sort { a, b ->
                 Integer.parseInt(a) <=> Integer.parseInt(b)
             }
         }

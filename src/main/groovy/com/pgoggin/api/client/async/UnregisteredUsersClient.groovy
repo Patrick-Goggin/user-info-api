@@ -1,4 +1,4 @@
-package com.pgoggin.api.client
+package com.pgoggin.api.client.async
 
 import com.pgoggin.api.domain.UserInfo
 import groovy.util.logging.Log

@@ -1,9 +1,9 @@
 package com.pgoggin.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.pgoggin.api.client.ProjectMembershipClient
-import com.pgoggin.api.client.RegisteredUsersClient
-import com.pgoggin.api.client.UnregisteredUsersClient
+import com.pgoggin.api.client.async.ProjectMembershipClient
+import com.pgoggin.api.client.async.RegisteredUsersClient
+import com.pgoggin.api.client.async.UnregisteredUsersClient
 import com.pgoggin.api.domain.ProjectMembership
 import com.pgoggin.api.domain.UserInfo
 import com.pgoggin.api.fixture.UserInfoServiceSpecFixture
