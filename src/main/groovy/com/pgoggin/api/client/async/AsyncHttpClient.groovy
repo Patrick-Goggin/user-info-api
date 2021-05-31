@@ -1,4 +1,4 @@
-package com.pgoggin.api.client
+package com.pgoggin.api.client.async
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.util.logging.Log

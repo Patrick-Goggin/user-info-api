@@ -1,6 +1,6 @@
-package com.pgoggin.api.client
+package com.pgoggin.api.client.async
 
-import com.pgoggin.api.domain.UserInfo
+import com.pgoggin.api.domain.ProjectMembership
 import groovy.util.logging.Log
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -9,18 +9,18 @@ import java.net.http.HttpResponse
 import java.util.concurrent.CompletableFuture
 
 @Log
-@Component("registeredUsersClient")
-class RegisteredUsersClient extends AsyncHttpClient<UserInfo> {
-    @Value('${api.registered.users.uri}')
-    String registeredUsersUri
+@Component("projectMembershipClient")
+class ProjectMembershipClient extends AsyncHttpClient<ProjectMembership> {
+    @Value('${api.project.memberships.uri}')
+    String projectMembershipsUri
 
     @Override
     CompletableFuture<HttpResponse<String>> getFuture() {
-        super.get(registeredUsersUri)
+        super.get(projectMembershipsUri)
     }
 
     @Override
-    List<UserInfo> resolveFuture(CompletableFuture<HttpResponse<String>> future) {
+    List<ProjectMembership> resolveFuture(CompletableFuture<HttpResponse<String>> future) {
         HttpResponse<String> response = null
         try {
             response = future.get()
@@ -31,7 +31,7 @@ class RegisteredUsersClient extends AsyncHttpClient<UserInfo> {
         result
     }
 
-    List<UserInfo> mapResponse(String responseBody) {
+    List<ProjectMembership> mapResponse(String responseBody) {
         super.mapResponse(responseBody)
     }
 }
