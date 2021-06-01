@@ -3,6 +3,7 @@ REST API for Datasite code test
 
 ## Technologies Used
 - Spring Boot
+- Spring WebFlux
 - Spock
 - Groovy
 - Docker
@@ -33,9 +34,12 @@ $ docker run -it -p8080:8080 user-info-api:0.0.1-SNAPSHOT
 ## Smoke Test Endpoint
 ### In a browser or using a REST client, make a GET request to this url:
 http://localhost:8080/userinfo
+### or this one for the reactive implementation
+http://localhost:8080/reactive/userinfo
 
-### Or run this cURL:
+### Or run these cURL commands:
 ```bash
 $ curl --request GET --url http://localhost:8080/userinfo
+$ curl --request GET --url http://localhost:8080/reactive/userinfo
 ```
 
