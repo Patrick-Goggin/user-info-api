@@ -1,6 +1,7 @@
 package com.pgoggin.api.controller
 
 import com.pgoggin.api.domain.UserInfo
+
 import com.pgoggin.api.service.ReactiveUserInfoService
 import com.pgoggin.api.service.UserInfoService
 import lombok.extern.slf4j.Slf4j
@@ -15,7 +16,7 @@ class UserInfoController {
     @Autowired
     UserInfoService userInfoService
     @Autowired
-    ReactiveUserInfoService reactiveUserInfoService
+    ReactiveUserInfoService reactiveUserInfoService2
 
     @GetMapping("/userinfo")
     List<UserInfo> getUserInfo() {
@@ -24,7 +25,7 @@ class UserInfoController {
 
     @GetMapping("/reactive/userinfo")
     Mono<List<UserInfo>> getUserInfoReactive() {
-        Mono<List<UserInfo>> result = reactiveUserInfoService.getUserInfo()
+        Mono<List<UserInfo>> result = reactiveUserInfoService2.getUserInfo()
         result
     }
 }

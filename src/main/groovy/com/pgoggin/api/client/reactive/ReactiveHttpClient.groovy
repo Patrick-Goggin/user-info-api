@@ -28,61 +28,51 @@ class ReactiveHttpClient {
     List<UserInfo> registeredUsers
     List<ProjectMembership> projectMemberships
 
-    Flux<UserInfo> getUserInfo() {
+    Flux<UserInfo> getRegisteredUserFlux() {
         WebClient webClient = WebClient.builder().baseUrl(apiBaseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build()
-        Flux<UserInfo> registeredUsers = getRegisteredUsers(webClient).onErrorResume { e -> getDummyRegistered() }
-        Flux<UserInfo> unregisteredUsers = getUnregisteredUsers(webClient) onErrorResume { e -> getDummyUnregistered() }
-        Flux<UserInfo> result = Flux.concat(registeredUsers, unregisteredUsers)
-        return result.onErrorResume { e -> getDummyUserInfo() }
+        webClient.get().uri(registeredUsersUri).retrieve().bodyToFlux(UserInfo.class)
+        .onErrorResume { e -> getDummyRegistered() }
     }
 
-    Flux<ProjectMembership> getProjectMemberships() {
+    Flux<UserInfo> getUnregisteredUserFlux() {
         WebClient webClient = WebClient.builder().baseUrl(apiBaseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build()
-        return makeProjectMembershipsApiCall(webClient).onErrorResume { e -> getDummyProjectMemberships() }
+        webClient.get().uri(unregisteredUsersUri).retrieve().bodyToFlux(UserInfo.class)
+        .onErrorResume { e -> getDummyUnregistered() }
+    }
+
+    Flux<ProjectMembership> getProjectMembershipsFlux() {
+        WebClient webClient = WebClient.builder().baseUrl(apiBaseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build()
+        makeProjectMembershipsApiCall(webClient)
     }
 
     Flux<ProjectMembership> makeProjectMembershipsApiCall(WebClient webClient) {
-        webClient.get().uri(projectMembershipsUri).retrieve().bodyToFlux(ProjectMembership.class).onErrorResume { e -> getDummyProjectMemberships() }
-    }
-
-    Flux<UserInfo> getRegisteredUsers(WebClient webClient) {
-        webClient.get().uri(registeredUsersUri).retrieve().bodyToFlux(UserInfo.class).onErrorResume { e -> getDummyRegistered() }
-    }
-
-    Flux<UserInfo> getUnregisteredUsers(WebClient webClient) {
-        webClient.get().uri(unregisteredUsersUri).retrieve().bodyToFlux(UserInfo.class).onErrorResume { e -> getDummyUnregistered() }
-    }
-
-    Flux<UserInfo> getDummyUserInfo() {
-        Flux<UserInfo> registeredUsers = Flux.fromIterable(registeredUsers)
-        Flux<UserInfo> unregisteredUsers = Flux.fromIterable(unregisteredUsers)
-        Flux<UserInfo> userInfo = Flux.concat(registeredUsers, unregisteredUsers)
-        userInfo
+        webClient.get().uri(projectMembershipsUri).retrieve().bodyToFlux(ProjectMembership.class)
+        .onErrorResume { e -> getDummyProjectMemberships() }
     }
 
     Flux<UserInfo> getDummyRegistered() {
-        return Flux.fromIterable(registeredUsers)
+        Flux.fromIterable(registeredUsers)
     }
 
     Flux<UserInfo> getDummyUnregistered() {
-        return Flux.fromIterable(unregisteredUsers)
+        Flux.fromIterable(unregisteredUsers)
     }
 
     Flux<ProjectMembership> getDummyProjectMemberships() {
         Flux.fromIterable(projectMemberships)
     }
 
+    @PostConstruct
+    void onInit() throws BeansException {
+        ObjectMapper objectMapper = new ObjectMapper()
+        registeredUsers = objectMapper.readValue(getFileContentsAsString('registeredusers-response.json'), List<UserInfo>.class)
+        unregisteredUsers = objectMapper.readValue(getFileContentsAsString('unregisteredusers-response.json'), List<UserInfo>.class)
+        projectMemberships = objectMapper.readValue(getFileContentsAsString('projectmemberships-response.json'), List<ProjectMembership>.class)
+    }
+
     String getFileContentsAsString(String fileName) {
         String filePath = "src/main/resources/upstream-api-mock-responses/${fileName}"
         File file = new File(filePath)
         file.text
-    }
-
-    @PostConstruct
-    void onInit() throws BeansException {
-        ObjectMapper objectMapper = new ObjectMapper()
-        this.registeredUsers = objectMapper.readValue(getFileContentsAsString('registeredusers-response.json'), List<UserInfo>.class)
-        this.unregisteredUsers = objectMapper.readValue(getFileContentsAsString('unregisteredusers-response.json'), List<UserInfo>.class)
-        this.projectMemberships = objectMapper.readValue(getFileContentsAsString('projectmemberships-response.json'), List<ProjectMembership>.class)
     }
 }
